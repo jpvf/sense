@@ -1,0 +1,87 @@
+<?php if ( ! defined('BASE')) exit('Acceso directo prohibido');
+//DEPRECATED
+class Modules
+{
+    private static $tc_router;
+    public static $class;
+    private static $module;
+    private static $folder;
+    private static $reg;
+    
+    public static function getInstance()
+    {
+        if ( ! self::$module)
+        {
+            self::$module = new modules();
+        }
+        return self::$module;
+    }
+    
+    function __construct()
+    {
+        //show(__CLASS__ . ' iniciada <br>');
+        self::$reg = array();
+    }
+    
+    public static function run($module)
+    {
+        
+        $args = func_get_args();    
+        
+        $method = 'index';
+        $load = loader::getInstance();
+
+        list($folder,$class, $method) = explode('/', $module);
+       
+        $old_controlador = $load->controlador;
+
+        $load->controlador = $class;
+
+        if ( ! class_exists($class))
+        { 
+            $file = RUTA_MODULOS . $folder . '/controllers/' . $class . EXT;
+            
+            if(file_exists($file))
+            {
+                include($file);
+                $exists = TRUE;
+            }
+            else
+            {
+                $exists = FALSE;
+            }
+        }
+        else
+        {
+            $exists =  TRUE;
+        }
+
+        self::$class = $class;
+        self::$folder = $folder;
+        
+        if ($exists === TRUE) 
+        {      
+            $class_string = $class;
+            if ( ! in_array($class, self::$reg))
+            { 
+                $class = new $class;
+                self::$reg[$class_string] = $class;                
+            }
+            else
+            {
+                $class = self::$reg[$class_string];
+            }
+            
+            if (is_callable(array($class,$method)))
+            {       
+                //Arranca!!!
+                $base = controller::getInstance();  
+                $base->model = new $class;
+                call_user_func_array(array(&$class, $method), array_slice($args,1));              
+            } 
+        }
+
+         $load->controlador = $old_controlador;
+    }   
+
+}

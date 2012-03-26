@@ -1,0 +1,3 @@
+<?php 
+
+$pagination['template'] = array();
