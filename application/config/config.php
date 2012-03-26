@@ -30,66 +30,74 @@ return array(
 	*/
 
 	'index_page' => "index.php",
+
+	/*
+	|--------------------------------------------------------------------------
+	| System email
+	|--------------------------------------------------------------------------
+	|
+	| The system email to send errors to, if in development all the emails
+	| will be sent to this one
+	|
+	*/
+
+	'admin_email' => "developers@totalcode.com",
+
+	/*
+	|--------------------------------------------------------------------------
+	| Encoding Key
+	|--------------------------------------------------------------------------
+	|
+	| This will be the encoding key for the whole application so you can use it
+	| encoding: passwords, sessions and pretty much everything you need to, 
+	| you can encode any string using the helper function salt_it($string).
+	|
+	*/
+
+	'salt' => "SE2579NS346E8S3A5L6T",
+
+	/*
+	|--------------------------------------------------------------------------
+	| Clean XSS Globally
+	|--------------------------------------------------------------------------
+	|
+	| If set to true the system will clean up all the globals variables such as
+	| GET, POST, SERVER from xss, it will hit performance.
+	|
+	*/
+	
+	'sanitize_globals'   => false,
+	
+	/*
+	|--------------------------------------------------------------------------
+	| System's default lang
+	|--------------------------------------------------------------------------
+	|
+	| This will be the default language used to load language files
+	|
+	*/
+	
+	'default_lang'		  => 'es_LA',
+
+	/*
+	|--------------------------------------------------------------------------
+	| CSRF token
+	|--------------------------------------------------------------------------
+	|
+	| This is the token used in csrf protection
+	|
+	*/
+	
+	'token'			  => md5(sha1(uniqid(rand()))),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Session expire time
+	|--------------------------------------------------------------------------
+	|
+	| This will be the session expire time in minutes
+	|
+	*/
+	
+	'session_time'		  => 30,
 );
-
-/*
- * Url del sistema debe contener, el slash del final y el protocolo http.
- */
-$config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-$config['base_url'] .= "://".$_SERVER['HTTP_HOST']  . '/';
-
-/*
- * Esta es la pagina de inicio del sistema por donde todo va a ser enrutado. Si se usa el modrewrite de apache para esconderlo, dejarlo en blanco
- *  asi: "".
- */
-$config['index_page']         = "index.php";
-
-
-/*
- * Email por defecto del sistema
- */
-$config['admin_email'] 		  = "developers@totalcode.com";
-
-/*
- * Llave para codificar y decodificar dentro del sistema
- */
-$config['salt'] 	   		  = "B2579P3468SALT"; 
-
-/*
- * Indica si se deben o no limpiar las variables globales por defecto, puede afectar el rendimiento.
- */
-$config['sanitize_globals']   = FALSE; 
-
-/*
- * Indica si se van a utilizar archivos de lenguaje dentro del sistema
- */
-$config['lang_files']		  = TRUE; 
-
-/*
- * Lenguaje por defecto, solo las 2 letras que lo identifican: es, en, fr, pt
- */
-$config['default_lang']		  = 'es';//idioma por defecto
-
-/*
- * Controlador por defecto, si solo aparece el index.phtml en la url se llegará aca.
- */
-$config['default_controller'] = 'home'; 
-
-/*
- * Token de validacion en los formularios o donde se necesite
- */
-$config['token']			  = md5(sha1(uniqid(rand())));//token para validarlo en los formularios
-
-/*
- * Tiempo de vida de la sesion del ususario
- */
-$config['session_time']		  = 30;
-
-/*
- * Se puede utilizar una extension de archivos al final de la url, no afectaran en nada y son unicamente
- * visuales.
- */
-$config['url_extension']	  = '';
-
-/* Fin del archivo config.phtml */
-/* Ubicacion: /config/config.phtml */
