@@ -1,25 +1,40 @@
 <?php 
-/*
- * Archivo de configuracion de la clase upload para manejar las subidas de archivos al
- * sistema 
- */
 
-/*
- * Ruta de la carpeta
- */
-$config['upload_path'] = PATH . '/uploads/';
+return array(
 
-/*
- * Extensiones permitidas
- * $config['allowed']     = 'gif|jpg|png|txt|doc|pdf|docx|xls|csv|ppt';
- */
-$config['allowed']     = 'txt|doc|xls|csv|ppt|pdf|gif|jpg|jpeg|png|psd|xlsx|docx|pptx';
+	/*
+	|--------------------------------------------------------------------------
+	| Path to move the files to
+	|--------------------------------------------------------------------------
+	|
+	| Just the folder where the files are going by default, you can override 
+	| this configuration value when going initializing the class.
+	|
+	*/
+	
+	'upload_path' => 'uploads',
 
+	/*
+	|--------------------------------------------------------------------------
+	| Allowed extensions
+	|--------------------------------------------------------------------------
+	|
+	| Whatever extensions you are allowing to be uploaded to the server, has to
+	| be separated by a pipe.
+	|
+	*/
 
-/*
- * Tamaño máximo
- */
-$config['max_size']    = '50000000';
+	'allowed' => 'txt|doc|xls|csv|ppt|pdf|gif|jpg|jpeg|png|psd|xlsx|docx|pptx',
 
-/* Fin del archivo upload_config.phtml */
-/* Ubicacion: /config/upload_config.phtml */
+	/*
+	|--------------------------------------------------------------------------
+	| Max file size allowed
+	|--------------------------------------------------------------------------
+	|
+	| Maximum file size allowed to be uploaded to the server in mb
+	|
+	*/
+
+	'max_size' => '5',
+
+);
