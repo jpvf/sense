@@ -20,25 +20,6 @@ if( ! function_exists('nbsp'))
         return $nbsp;
     }
 }  
-/**
- * Agrega la imagen cuando un llamado en ajax se esta ejecutando.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('ajax_image'))
-{
-    function ajax_image($white = FALSE)
-    {
-        if ($white === TRUE)
-        {
-            return '<span class="loading align-right hidden"><img src="' . base_url() . 'assets/images/ajax-loader.gif" /></span>';
-        }
-        return '<span class="loading align-right hidden"><img src="' . base_url() . 'assets/images/ajax-loader.gif" /></span>';
-    }
-}      
 
 /**
  * Crea una lista UL
@@ -148,181 +129,48 @@ if( ! function_exists('span'))
 }      
 
 /**
- * Verifica que el token que llega por post sea similar al que esta almacenado en la sesion, 
- * si no coinciden redirige y muestra un error
+ * Crea una etiqueta anchor, solo es necesario agregar en el href los segmentos despues
+ * del index.phtml
  *
  * @access  public
  * @param   string
  * @return  string
  */
 
-if( ! function_exists('check_token'))
-{    
-    function check_token($token = 'token', $redirect = '', $return = FALSE)
-    {
-        $input   = input::getInstance();
-        $session = session::getInstance();
-        
-        if ( ($session->get($token) != $input->post($token)) OR !$input->post($token) OR !$session->get($token))
-        {
-            $session->unset_var($token);
-            
-            if ($return === FALSE)
-            {
-                mensaje_error("Ha ocurrido un error guardando la informaci&oacute;n int&eacute;ntelo de nuevo." , $redirect);
-            }
-            elseif ($return === TRUE)
-            {
-                return FALSE;
-            }
-        }
-        
-        $session->unset_var($token);
-        
-        if ($return === TRUE)
-        {
-            return TRUE;
-        }
-    
-    }    
-}      
-
-/**
- * Muestra un span con la clase clearFix
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('clear_fix'))
-{    
-    function clear_fix()
-    {
-        return '<span class="clearFix"></span>';
-    }
-}      
-
-/**
- * Muestra un mensaje del sistema puede ser de tipo de error, alerta, exito o informacion.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('messages'))
-{
-    function messages($message = '', $type = '', $sticky = FALSE)
-    {
-       if ( ! $message)
-       {
-            return;
-       }
-       
-       $close = "<span class='close' id='hide' title='Cerrar'></span>";
-       $class = "";
-       
-       if ($sticky === TRUE)
-       {
-            $close = '';
-            $class = 'sticky';
-       }
-       
-       $message = "<div class='message $type $class' style='display: block; '><p>$message</p>$close</div>";
-       return $message;        
-    }
-}      
-
-/**
- * Crea un mensaje de exito, verde.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('mensaje_ok'))
-{    
-    function mensaje_ok($mensaje = 'Operación completada con exito' , $url = '')
-    {
-       mensaje($mensaje, $url, 'success');
-    }
-}      
-
-/**
- * Crea un mensaje de error, rojo.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('mensaje_error'))
+if ( ! function_exists('anchor'))
 {   
-    function mensaje_error($mensaje = 'Error durante la operación' , $url = '')
+    function anchor($uri = '', $text = '', $attributes = array(), $external = FALSE)
     {
-       mensaje($mensaje, $url, 'error');
-    }
-}      
-
-/**
- * Crea un mensaje de informacion, azul.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('mensaje_info'))
-{    
-    function mensaje_info($mensaje = 'Mensaje de información' , $url = '')
-    {
-       mensaje($mensaje, $url, 'info');
-    }
-}      
-
-/**
- * Crea un mensaje de alerta, amarillo.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('mensaje_alerta'))
-{    
-    function mensaje_alerta($mensaje = 'Mensaje de alerta' , $url = '')
-    {
-       mensaje($mensaje, $url, 'warning');
-    }
-}      
-
-/**
- * Crea el mensaje almacenandolo en una variable de sesion que esta disponible para 
- * la siguiente peticion.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('mensaje'))
-{   
-    function mensaje($mensaje = '', $url = '', $tipo = '')
-    {
-        if ($url[0] != '/')
+        if (strpos($uri, '#') === FALSE)
         {
-            $url = '/' . $url;
+            $uri = ( ! preg_match('!^\w+://! i', $uri)) ? get_url().((substr($uri,0,1) == '/') ? '' : '/' ).$uri : $uri;            
         }
-        
-        $session = session::getInstance();
-        $array = array('mensaje' => $mensaje , 'tipo' => $tipo);
-        $session->set_flashdata($array);
-        redirect(get_url() . $url); 
+        echo $uri;
+        return '<a href="'.$uri.'" '.form_attributes($attributes).' >'.$text.'</a>';
     }
 }
 
+/**
+ * Muestra las etiquetas <br>, recibe un parametro entero para el número de repeticiones
+ * del <br>
+ *
+ * @access  public
+ * @param   integer
+ * @return  string
+ */
+
+if ( ! function_exists('br'))
+{   
+    function br($repeat = 1)
+    {
+        $br = '';
+        for ($i = 0;$i < $repeat; $i++)
+        {
+           $br .= '<br />';
+        }
+        return $br;
+    }
+}
 
 function get_select_options($result = array(), $index = '', $value = '', $first_empty = false)
 {
