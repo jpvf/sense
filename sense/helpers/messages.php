@@ -46,8 +46,8 @@ class Message {
     {
         $session = session::getInstance();
 
-        $text = ( ! empty(static::$_instant) ? static::$_instant['text'] : $session->flashdata('text'));
-        $type = ( ! empty(static::$_instant) ? static::$_instant['type'] : $session->flashdata('type'));
+        $text = ( ! empty(static::$_instant) ? static::$_instant['text'] : $session->get_flashdata('text'));
+        $type = ( ! empty(static::$_instant) ? static::$_instant['type'] : $session->get_flashdata('type'));
 
         if (empty($text) OR empty($type))
         {

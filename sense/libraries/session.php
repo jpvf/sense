@@ -4,61 +4,55 @@ namespace Sense\Libraries;
 
 class Session{
 
-    private static $session;
+    private static $instance;
+
+    static function getInstance() 
+    { 
+        if ( ! static::$instance) 
+        { 
+            static::$instance = new Session(); 
+        } 
+        return static::$instance; 
+    }
     
     function __construct()
     {
-        self::$session = $this;
+        static::$instance = $this;
         
         $this->input = \Sense\Core\Input::getInstance();
         
-        if ( ! isset($_SESSION))
-        { 
-        	session_start();
-        }	
+        isset($_SESSION) OR session_start();
         
-        if (isset($_SESSION['flashdata']['vieja']))
+        if (isset($_SESSION['flashdata']['old']))
         {
-            unset($_SESSION['flashdata']['vieja']);
+            unset($_SESSION['flashdata']['old']);
         }
         
-        if (isset($_SESSION['flashdata']['nueva']))
+        if (isset($_SESSION['flashdata']['old']))
         {
-            $_SESSION['flashdata']['vieja'] = $_SESSION['flashdata']['nueva'];
-            unset($_SESSION['flashdata']['nueva']);
+            $_SESSION['flashdata']['old'] = $_SESSION['flashdata']['new'];
+            unset($_SESSION['flashdata']['new']);
         }
         
         $this->clean_cache();
     }
     	
-	static function getInstance() 
-    { 
-        if ( ! self::$session) 
-        { 
-            self::$session = new session(); 
-        } 
-        return self::$session; 
-    }
-
-    private function _set_vars($vars = array(), $val = '', $flashdata = FALSE)
+    private function _set_vars($vars = array(), $val = '', $flashdata = false)
     {
-         if ( is_string($vars) && ! empty($val))
+        if ( is_string($vars) AND ! empty($val))
         {
             $vars = array($vars => $val);
         }
-        
-        if(count($vars) > 0)
+
+        foreach($vars as $key => $val)
         {
-            foreach($vars as $key => $val)
+            if ($flashdata !== false)
             {
-                if ($flashdata !== FALSE)
-                {
-                    $_SESSION['flashdata']['nueva'][$key] = $val; 
-                }
-                else
-                {
-                    $_SESSION[$key] = $val;
-                }
+                $_SESSION['flashdata']['new'][$key] = $val; 
+            }
+            else
+            {
+                $_SESSION[$key] = $val;
             }
         }
     }
@@ -67,33 +61,29 @@ class Session{
     function set_flashdata($flash = array(), $val = '')
     {
         $this->_set_vars($flash, $val, TRUE);
-
         return $this;
     }
 
-    function set($name = array(), $value = '')
+    function set($key = null, $value = '')
     {
-        $this->_set_vars($name, $value);
+        if ( ! is_null($name))
+        {
+            $this->_set_vars($name, $value);                        
+        }
         return $this;
     }
     
-    //MODIFICAR NOMBRE
-    function flashdata($key)
+
+    function get_flashdata($key)
     {
-        if ( ! isset($_SESSION['flashdata']['vieja']))
+        if ( ! isset($_SESSION['flashdata']['old'][$key]))
         {
             return FALSE;
         }
         
-        if ($_SESSION['flashdata']['vieja'][$key] )
-        {
-        	return $_SESSION['flashdata']['vieja'][$key];
-        }
-        return FALSE;
+        return $_SESSION['flashdata']['old'][$key];
     }
     
-	
- 
 	function get($key = NULL, $key2 = NULL)
 	{
         if (is_null($key))

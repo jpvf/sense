@@ -119,13 +119,14 @@ class db extends Query_Builder
     
     private function _execute($query){
         
-        $this->counter   += 1;            
+        $this->counter    += 1;            
         $start_time       = microtime();
         $rows             = mysql_query($query);
         $end_time         = microtime(); 
         $this->queries[]  = $query;
-        $this->time      += $end_time - $start_time;           
-        $this->query_time = $end_time - $start_time;        
+        $this->time       += $end_time - $start_time;           
+        $this->query_time = $end_time - $start_time; 
+               
         $this->_query_error();
         
         return $rows;
