@@ -30,7 +30,7 @@ class Table
 		
 	}
     
-    private function _create_row($data, $attr = array(), $tag = 'td')
+    private function _create_row($data, $attr = array())
     {
         $row = '';
         
@@ -65,7 +65,7 @@ class Table
                         $td = $exploded_data;                    
                      }
                      
-                     $row .= "\n\t\t\t<$tag $td_attr>$td</$tag>";
+                     $row .= "\n\t\t\t<td $td_attr>$td</td>";
                 }
                 
             $row .= "\n\t\t</tr>";

@@ -2,20 +2,20 @@
 
 class Acl{
 
-    private static $acl;
+    private static $instance;
     
     public static function getInstance()
     {
-    	if ( ! self::$acl) 
+    	if ( ! self::$instance) 
         { 
-            self::$acl = new acl(); 
+            self::$instance = new Acl(); 
         } 
-        return self::$acl; 
+        return self::$instance; 
     }
     
     function __construct()
     {
-        self::$acl = $this;
+        self::$instance = $this;
     }
     
     function set_data($data = array())
