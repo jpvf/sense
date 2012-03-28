@@ -41,7 +41,7 @@ return array(
 	|
 	*/
 
-	'admin_email' => "developers@totalcode.com",
+	'admin_email' => "developers@sense.com",
 
 	/*
 	|--------------------------------------------------------------------------
