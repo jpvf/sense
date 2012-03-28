@@ -34,12 +34,12 @@ class Query_Builder
             $this->from($table);
         }
 
-        if ($where != '')
+        if ($where)
         {
             $this->where($where);
         }
 
-        if ($limit != '')
+        if ($limit)
         {
             $this->limit($limit);
         }

@@ -1,6 +1,6 @@
 <?php
 
-class Payments extends Application\Core\App_Controller {
+class Payments_Controller extends Application\Core\App_Controller {
 
 	function index()
 	{

@@ -1,6 +1,6 @@
 <?php
 
-class Profile extends Application\Core\App_Controller {
+class Profile_Controller extends Application\Core\App_Controller {
 
 	function index()
 	{

@@ -1,6 +1,6 @@
 <?php
 
-class Account extends Application\Core\App_Controller {
+class Account_Controller extends Application\Core\App_Controller {
 
 	function index()
 	{

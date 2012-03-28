@@ -1,6 +1,6 @@
 <?php
 
-class Invoices extends Application\Core\App_Controller {
+class Invoices_Controller extends Application\Core\App_Controller {
 
 
 	function create(){}

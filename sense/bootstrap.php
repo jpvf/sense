@@ -39,7 +39,7 @@ $load->helper(Config::get('helpers'));
 
 include_once $route->file;
 
-$class = ucwords($route->controller);
+$class = ucwords($route->controller).'_Controller';
 
 $error = false;
 
