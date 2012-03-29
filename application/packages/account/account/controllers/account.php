@@ -15,7 +15,7 @@ class Account_Controller extends Application\Core\App_Controller {
 
 Routes::get('/', function()
 {
-	echo 'Bienvenido Pagina principal';
+	Views::factory('index', array())->render();
 });
 
 Routes::post('home', function($pagina = 'index', $o = 'lll')
@@ -42,3 +42,20 @@ Routes::get('account/account(/index|)', function()
 {
 	echo 'Account';
 });
+
+
+class Views {
+
+	function __construct($view = '', $data = array())
+	{
+		Loader::getInstance()->view($view, $data);
+	}
+
+	function render(){}
+
+	public static function factory($view = '', $data = array())
+	{
+		return new Views($view, $data);
+	}
+
+}
