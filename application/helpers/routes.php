@@ -18,6 +18,18 @@ class Routes {
 
 	private static function _register($route = '', $callback = null)
 	{
+		if (strpos($route, ',') !== FALSE)
+		{
+			$routes = explode(',', $route);
+			
+			foreach ($routes as $route)
+			{
+				static::_register($route, $callback);
+			} 
+
+			return;
+		}
+
 		static::$_routes[trim(trim($route), '/')] = $callback; 
 	}
 

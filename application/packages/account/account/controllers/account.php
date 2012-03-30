@@ -8,17 +8,17 @@ class Account_Controller extends Application\Core\App_Controller {
 	{
 		//echo $this->uri->get_uri_string();
 		//Routes::run('/admin/users/123123789/details/123123');
-		Routes::run();
+		Routes::run('/');
 	}
 
 }
 
-Routes::get('/', function()
+Routes::get('/, home', function()
 {
 	Views::factory('index', array())->render();
 });
 
-Routes::post('home', function($pagina = 'index', $o = 'lll')
+Routes::post('hsome', function($pagina = 'index', $o = 'lll')
 {
 	echo 'Pagina : '.$pagina;
 });
