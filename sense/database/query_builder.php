@@ -285,7 +285,28 @@ class Query_Builder
         return $this;
     }
 
-    function join($table = '', $on = '', $type = '')
+    /*Joins */
+    public function join($table = '', $column1 = '', $operator = '', $column2 = '')
+    {
+        return $this->_join($table, $column1.$operator.$column2);
+    }
+
+    public function left_join($table = '', $column1 = '', $operator = '', $column2 = '')
+    {
+        return $this->_join($table, $column1.$operator.$column2, 'LEFT');
+    }
+
+    public function right_join($table = '', $column1 = '', $operator = '', $column2 = '')
+    {
+        return $this->_join($table, $column1.$operator.$column2, 'RIGHT');
+    }
+
+    public function inner_join($table = '', $column1 = '', $operator = '', $column2 = '')
+    {
+        return $this->_join($table, $column1.$operator.$column2, 'INNER');
+    }
+
+    private function _join($table = '', $on = '', $type = '')
     {        
         if (is_array($table))
         {

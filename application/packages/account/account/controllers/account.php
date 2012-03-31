@@ -6,16 +6,21 @@ class Account_Controller extends Application\Core\App_Controller {
 
 	function index()
 	{
-		$users_model = Model::factory('account_model');
+		
+		$this->db->get('users');
 
-		debug($users_model->by('id', '1, 2', 'IN')->find_all());
-
-		echo Config::get('admin_email');
 		//echo $this->uri->get_uri_string();
 		//Routes::run('/admin/users/123123789/details/123123');
 		//Routes::run('/');
 	}
 
+}
+
+function select()
+{
+	$fields = func_get_args();
+
+	debug($fields);	
 }
 
 Routes::get('/, home', function()
