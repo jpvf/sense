@@ -41,9 +41,9 @@ class Uri{
         $this->segments   = $this->rsegments = explode('/', $uri);         
     }
 
-    function get($param = NULL)
+    function get($param = null)
     {       
-        if (is_null($param))
+        if (is_null($param) OR ! is_numeric($param))
         {
             return $this->get_uri_string();
         }
