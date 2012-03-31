@@ -51,7 +51,7 @@ class Message {
 
         if (empty($text) OR empty($type))
         {
-            return NULL;
+            return null;
         }
         
         $message = "<div class='alert alert-$type'>$text</div>";

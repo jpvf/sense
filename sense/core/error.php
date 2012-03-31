@@ -22,31 +22,27 @@ class Error{
     
 	public function trigger_error($error = NULL, $args = null)
 	{
-		if( ! is_null($error))
+		if(is_null($error))
 		{
-			switch($error)
-			{
-				case 'model_missing':
-					echo 'No model was found with the name: ' . $args . '<br />';
-					break;		
-				case 'controller_missing':
-					echo 'No controller was found with the name: ' . $args . '<br />';
-					break;
-				case 'view_missing':
-					echo 'No view was found with the name: ' . $args . '<br />';
-					break;	
-				case '404':
-				    header("HTTP/1.0 404 Not Found");
-				    if (function_exists('is_xhr') AND is_xhr())
-				    {
-				        echo '404. Página no encontrada';
-				        exit;
-				    }
-					include(APP_PATH.'errors/404'.EXT);
-					exit;
-					break;
+			return;
+		}
 
-			}
+		switch($error)
+		{
+			case '404':
+			    header("HTTP/1.0 404 Not Found");
+			    
+			    if (function_exists('is_xhr') AND is_xhr())
+			    {
+			    	header('Cache-Control: no-cache, must-revalidate');
+					header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+			        exit;
+			    }
+
+				include(APP_PATH.'errors/404'.EXT);
+				exit;
+				break;
+
 		}
 	
 	}

@@ -3,46 +3,34 @@
 class Assets
 {
 
-	private static $css = array();
-	private static $js  = array();
+	private static $_css = array();
+	private static $_js  = array();
 	
-	static function css($css = '')
+	static function css($css = '', $path = 'assets/css', $ext = '.css')
 	{		
-	    $css = self::_string_to_array($css);        
+	    $css = static::_string_to_array($css);        
 		
-		foreach($css as $row){
-			
-		    $path = RUTA_CSS . $row  . CSS;
-			
-			if (file_exists($path))
-			{
-				$src = base_url() . 'assets/css/' . $row . '.css';
-				self::$css[] = "<link type='text/css' href='$src' rel='stylesheet' />";
-			}			
+		foreach($css as $row)
+		{
+			$src = base_url().$path.'/'.trim($row).$ext;			
+			static::$_css[] = "<link type='text/css' href='$src' rel='stylesheet' />";			
 		}
 	}
 
-	static function js($script = '')
+	static function js($script = '', $path = 'assets/js', $ext = '.js')
 	{		
 		$script = self::_string_to_array($script);
 
 		foreach($script as $row)
 		{
-			$row = trim($row);
-			
-			$path = RUTA_JS . $row  . JS;
-			
-			if (file_exists($path))
-			{
-				$src = base_url() . 'assets/js/' . $row . JS;
-				self::$js[] = "<script type='text/javascript' src='$src' ></script>";	
-			}
+			$src = base_url().$path.'/'.trim($row).$ext;
+			self::$_js[] = "<script type='text/javascript' src='$src' ></script>";	
 		}	
 	}
 
 	static private function _string_to_array($items = NULL)
 	{
-		if(is_string($items))
+		if( ! is_array($items))
 		{		    
 		   if (strpos($items, ',') !== FALSE)
            {
@@ -59,11 +47,11 @@ class Assets
 	
 	static function show_js()
 	{
-		return (isset(self::$js) && ! empty(self::$js)) ? implode("\n\t", self::$js) : '';
+		return ( ! empty(static::$_js)) ? implode("\n\t", static::$_js) : '';
 	}
 	
 	static function show_css()
 	{  
-		return (isset(self::$css) && ! empty(self::$css)) ? implode("\n\t", self::$css) : '';
+		return ( ! empty(static::$_css)) ? implode("\n\t", static::$_css) : '';
 	}
 }

@@ -71,7 +71,7 @@ class Security {
 	 */
 	public function __construct()
 	{
-		//show(__CLASS__ . ' iniciada <br>');
+		show(__CLASS__ . ' iniciada <br>');
 		// Set the CSRF hash
 		$this->_csrf_set_hash();
 

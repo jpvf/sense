@@ -37,7 +37,7 @@ class Config
         {
             $file = trim($file);
         
-            $config_file = CONFIG_PATH.$file.EXT;
+            $config_file = APP_PATH.'config/'.$file.EXT;
 
             if (file_exists($config_file))
             {

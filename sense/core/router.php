@@ -56,9 +56,9 @@ class Router {
 
 	    $uri = implode('/', $segments);
 
-        if (isset($routes->$uri))
+        if (isset($routes[$uri]))
         {
-            return $this->_validate(explode('/', $routes->$uri));
+            return $this->_validate(explode('/', $routes[$uri]));
         }
 
         foreach ($routes as $key => $val)

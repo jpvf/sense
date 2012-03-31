@@ -9,6 +9,8 @@ class Account_Controller extends Application\Core\App_Controller {
 		$users_model = Model::factory('account_model');
 
 		debug($users_model->by('id', '1, 2', 'IN')->find_all());
+
+		echo Config::get('admin_email');
 		//echo $this->uri->get_uri_string();
 		//Routes::run('/admin/users/123123789/details/123123');
 		//Routes::run('/');

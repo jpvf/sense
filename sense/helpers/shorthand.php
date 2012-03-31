@@ -1,66 +1,53 @@
 <?php
 
-function _uid($table = NULL)
+if ( ! function_exists('_uid'))
 {
-    $number = _random_id();
-    
-    $results = db::getInstance()->where("uid = $number")->get($table);
-
-    if ($results->num_rows() > 0)
-    {
-        return _uid($table);
-    }
-
-    return $number;
-}
-
-function _random_id()
-{
-    $number = '';
-    for ($i=0; $i<8; $i++) 
-    { 
-        $number .= rand(1,9); 
-        
-    }
-    return $number;
-}
-
-function _post($item = NULL, $default = FALSE)
-{
-	if (input::getInstance()->post($item) === FALSE)
-	{	    
-		return $default;
-	}
-	return db::getInstance()->escape_str(input::getInstance()->post($item, TRUE), TRUE);
-}
-
-function _get($item = NULL, $default = FALSE)
-{
-	if (is_null($item) OR input::getInstance()->get($item) === FALSE)
+	function _uid($table = null)
 	{
-		return $default;
+	    $number = _random_id();
+	    
+	    $results = db::getInstance()->where("uid = $number")->get($table);
+
+	    if ($results->num_rows() > 0)
+	    {
+	        return _uid($table);
+	    }
+
+	    return $number;
 	}
-	return db::getInstance()->escape_str(input::getInstance()->get($item, TRUE), TRUE);
 }
 
-function _set_token()
+if ( ! function_exists('_random_id'))
 {
-	$token = config::getInstance()->get('token');
-	
-	session::getInstance()->set($token, $token);
-	
-	return $token;	
-}
-
-function _check_token()
-{
-	$session = session::getInstance();
-	$token   = input::getInstance()->post('token');
-	$check   = $session->get($token) !== FALSE ? TRUE : FALSE ;
-	$session->unset_var($token);
-	if ($check === FALSE)
+	function _random_id()
 	{
-		redirect(get_url());
+	    $number = '';
+
+	    for ($i=0; $i<8; $i++) 
+	    { 
+	        $number .= rand(1,9);         
+	    }
+
+	    return $number;
 	}
-	return TRUE;
+}
+
+if ( ! function_exists('_post'))
+{
+	function _post($item = null, $default = false)
+	{
+		$input = Input::getInstance()->post($item, true);
+
+		return $input ?: $default;
+	}
+}
+
+if ( ! function_exists('_get'))
+{
+	function _get($item = null, $default = false)
+	{
+		$input = Input::getInstance()->get($item, true);
+
+		return $input ?: $default;
+	}
 }

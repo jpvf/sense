@@ -113,44 +113,6 @@ if( ! function_exists('create_list'))
 }
 
 /**
- * Muestra un span con fuente de color rojo y doble espacio para mensajes del sistema.
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if( ! function_exists('span'))
-{
-    function span($msg = '', $color = 'red')
-    {
-       echo br() . '<span style="color:' . $color .'">' . $msg .'</span>' . br(2);
-    }
-}      
-
-/**
- * Crea una etiqueta anchor, solo es necesario agregar en el href los segmentos despues
- * del index.phtml
- *
- * @access  public
- * @param   string
- * @return  string
- */
-
-if ( ! function_exists('anchor'))
-{   
-    function anchor($uri = '', $text = '', $attributes = array(), $external = FALSE)
-    {
-        if (strpos($uri, '#') === FALSE)
-        {
-            $uri = ( ! preg_match('!^\w+://! i', $uri)) ? get_url().((substr($uri,0,1) == '/') ? '' : '/' ).$uri : $uri;            
-        }
-        echo $uri;
-        return '<a href="'.$uri.'" '.form_attributes($attributes).' >'.$text.'</a>';
-    }
-}
-
-/**
  * Muestra las etiquetas <br>, recibe un parametro entero para el número de repeticiones
  * del <br>
  *

@@ -50,8 +50,7 @@ class Uri{
 
         return (isset($this->segments[$param - 1]) ? $this->segments[$param - 1] : '');
     }
-    
-    
+        
     function fetch_uri()
     {        
         return $this->segments;

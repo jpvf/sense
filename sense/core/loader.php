@@ -24,7 +24,6 @@ class Loader{
 	function __construct()
 	{
 		show(__CLASS__ . ' iniciada <br>');
-        spl_autoload_register(array($this, 'library'));
 	}
 	
 	/**
@@ -113,21 +112,23 @@ class Loader{
 
 			foreach ($directories as $dir => $obj)
 			{
-				if (file_exists($dir))
+				if ( ! file_exists($dir))
 				{
-	    			include_once($dir);	
-	    			    				
-	    			if (class_exists($clase) AND $obj)
-	    			{	
-	    				$clase = ucfirst($clase);
-
-	    				$this->objects[$objeto] = new $clase($params);   
-	    			    		    
-	    			    $controller = Controller::getInstance();
-	    			    $controller->$objeto = $this->objects[$objeto];    			
-	    			}
-	    			break;
+					continue;
 				}
+
+    			include_once($dir);	
+    			    				
+    			if (class_exists($clase) AND $obj)
+    			{	
+    				$clase = ucfirst($clase);
+
+    				$this->objects[$objeto] = new $clase($params);   
+    			    		    
+    			    $controller = Controller::getInstance();
+    			    $controller->$objeto = $this->objects[$objeto];    			
+    			}
+    			break;
 			}					
 		}
 
@@ -136,40 +137,6 @@ class Loader{
 		
 	}
 	
-	/**
-	 * 
-	 * Cargara un paquete que consiste en cargar un archivo bootstrap o de inicio, cargara por defecto
-	 * un archivo llamado como el paquete y este se encargara de cargar lo que sea necesario para su 
-	 * funcionamiento.
-	 * 
-	 * @param $name
-	 */
-	function package($name = '')
-	{
-		$dir = RUTA_SISTEMA . '/packages/' . $name;
-		
-		if (is_dir($dir))
-		{
-			$file = $dir . '/' . $name . EXT;
-			
-			if (file_exists($file))
-			{
-				include($file);
-			}
-		}
-	}
-	
-	function file($file)
-	{
-		if (file_exists($file))
-		{
-			include($file);
-		}
-		else
-		{
-			//error
-		}
-	}
 
 	function set_vars($var = array(), $value = NULL)
 	{
@@ -273,27 +240,18 @@ class Loader{
         if (strpos($model, '/') !== FALSE)
 		{
 		    $model = explode('/', $model);
-		    $model = end($model);
-		    
+		    $model = end($model);		    
 		}
 
 		if ($create_object === true)
 		{
 			$obj  		= ($obj == '') ? $model : $obj ;
 			$base  		= Controller::getInstance(); 
-			$model 		= ucfirst($model);
-
-			echo $model;
+			$model 		= ucfirst($model);			
 			$base->$obj = new $model;
 		}
 
 		return $this;
-	}
-
-	function autoload_model()
-	{
-		$model = func_get_arg(0);
-		$this->model($model, '', FALSE);
 	}
 	
 	function helper($helpers = '')
