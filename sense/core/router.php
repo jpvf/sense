@@ -28,7 +28,7 @@ class Router {
 	{ 		    
         Config::load('routes');
 
-        $uri_string = $this->uri->get_uri_string();
+        $uri_string = $this->uri->fetch_uri_string();
 
         //Es necesario traer al controlador del config?
 		$uri = ( ! trim($uri_string, '/') ? $this->_default_controller() : $this->uri->fetch_uri());
