@@ -244,10 +244,8 @@ class Loader{
 		{
 			$router = Router::getInstance();
 
-			$module_file = APP_PATH.'packages/'.$router->package.'/'.$router->subpackage.'/models/'.$model.EXT;
+			$file = APP_PATH.'packages/'.$router->package.'/'.$router->subpackage.'/models/'.$model.EXT;
 
-    		$file = '';
-			
 			$sub = substr_count($model, '/');
 
 			switch ($sub)
@@ -258,7 +256,7 @@ class Loader{
 					break;
 				case 2:
 					list($package, $subpackage, $model) = explode('/', $model);    
-                	$file = APP_PATH.'packages/'.$package.'/'.$subpackage.'/models/'.$model.EXT;        
+                	$file = APP_PATH.'packages/'.$router->package.'/'.$router->subpackage.'/models/'.$model.EXT;        
 					break;
 			}
 

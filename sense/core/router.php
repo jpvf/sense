@@ -28,14 +28,10 @@ class Router {
 	{ 		    
         Config::load('routes');
 
-        //Trae la uri actual...
-	    $uri = $this->uri->fetch_uri();
+        $uri_string = $this->uri->get_uri_string();
 
         //Es necesario traer al controlador del config?
-		if ($this->uri->get_uri_string() == '/' OR ! $this->uri->get_uri_string())
-        {
-            $uri = $this->_default_controller();
-        }
+		$uri = ( ! trim($uri_string, '/') ? $this->_default_controller() : $this->uri->fetch_uri());
 
         //Revisa las rutas predefinidas para sobreescribir la actual
         $segments = $this->_custom_routes($uri);    

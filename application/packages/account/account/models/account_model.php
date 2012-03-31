@@ -1,11 +1,7 @@
 <?php
 
-class Account_Model extends \Sense\Core\Model {
-	
-	function find()
-	{
-		return $this->db->get('users');	
-	}
-	
+class Account_Model extends \Application\Core\App_Model {
+
+	protected $table = 'users';
 
 }
