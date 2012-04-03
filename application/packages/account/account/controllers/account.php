@@ -6,8 +6,13 @@ class Account_Controller extends Application\Core\App_Controller {
 
 	function index()
 	{
-		
-		$this->db->get('users');
+		/*
+		$this->db->where(array(
+			'id' => '1',
+			'active' => 1
+		))->get('users');
+
+		echo $this->db->last_query();
 
 		//echo $this->uri->get_uri_string();
 		//Routes::run('/admin/users/123123789/details/123123');
@@ -15,6 +20,9 @@ class Account_Controller extends Application\Core\App_Controller {
 	}
 
 }
+
+
+
 
 function select()
 {

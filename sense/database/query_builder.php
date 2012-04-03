@@ -20,6 +20,7 @@ class Query_Builder
     private $order_by = array();
     private $limit    = ''; 
     private $data     = array();
+    private $_escape_char = '`';
             
     
     function get($table = '', $limit = '', $where = '')
@@ -130,8 +131,7 @@ class Query_Builder
             $item = $this->_escape_identifiers($item);
         }
 
-        return $item.$alias;
-       /* $val = trim($val);
+        $val = trim($item);
 
         if (strpos($val, '.') !== FALSE)
         {
@@ -149,7 +149,7 @@ class Query_Builder
             $protected = '`' . $val . '`';
         }
 
-        return $protected;*/
+        return $protected;
     }
 
     function _escape_identifiers($item)
@@ -281,7 +281,7 @@ class Query_Builder
 
     function from($from = '')
     {
-        $this->from = "($from)";
+        $this->from = $this->_protect_identifiers($from);
         return $this;
     }
 
@@ -379,7 +379,7 @@ class Query_Builder
     
     function escape($str)
 	{
-		if (is_string($str))
+		if (is_string($str) OR is_numeric($str))
 		{
 			$str = "'".$this->escape_str($str)."'";
 		}
@@ -466,6 +466,8 @@ class Query_Builder
 
             if ( ! is_null($v))
             {                
+                $k = $this->_protect_identifiers($k);
+
                 if ( ! $this->_tiene_operador($k))
                 {
                     $k .= '=';                    
