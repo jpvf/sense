@@ -6,24 +6,26 @@ class Account_Controller extends Application\Core\App_Controller {
 
 	function index()
 	{
-		/*
-		$this->db->where(array(
-			'id' => '1',
-			'active' => 1
-		))->get('users');
+		Session::set('admin.id', 1);
+		Session::set('admin.ip_address', $this->input->ip_address());
 
-		echo $this->db->last_query();
+		//Session::flash('status', 'lol');
+		//Session::destroy();
+		debug(Session::get('admin.id'));
+		Session::remove('admin.ip_address');
+		debug(Session::all());
+		$model = Model::factory('account_model');
+		echo Session::id();
+		echo br(2);
 
-		//echo $this->uri->get_uri_string();
-		//Routes::run('/admin/users/123123789/details/123123');
-		//Routes::run('/');
+		$this->template;
 	}
 
 }
 
 
 
-
+/*
 function select()
 {
 	$fields = func_get_args();
@@ -76,4 +78,4 @@ class Views {
 		return new Views($view, $data);
 	}
 
-}
+}*/

@@ -24,14 +24,39 @@ else
 
 include_once SYSTEM_PATH.'core/autoloader'.EXT;
 
-Autoloader::init();
-Autoloader::register();
+//Autoloader::init();
+//Autoloader::register();
+spl_autoload_register(array('Autoloader', 'load'));
 
-Sense\Core\Config::load('config, autoload');
+Autoloader::namespaces(array(
+	'Sense\\Core'      => SYSTEM_PATH.'/core',
+	'Sense\\Database'  => SYSTEM_PATH.'/database',
+	'Sense\\Helpers'   => SYSTEM_PATH.'/helpers',
+	'Sense\\Libraries' => SYSTEM_PATH.'/libraries',
 
-$router = Sense\Core\Router::getInstance();
-$uri	= Sense\Core\Uri::getInstance();
-$load   = Sense\Core\Loader::getInstance();
+
+	'Application\\Core' 	 => APP_PATH.'/core',
+	'Application\\Libraries' => APP_PATH.'/libraries',
+));
+
+Autoloader::alias('Sense\\Core\\Config', 'Config');
+Autoloader::alias('Sense\\Core\\Loader', 'Loader');
+Autoloader::alias('Sense\\Core\\Model', 'Model');
+Autoloader::alias('Sense\\Core\\Router', 'Router');
+Autoloader::alias('Sense\\Core\\Uri', 'Uri');
+
+Autoloader::alias('Sense\\Libraries\\Session', 'Session');
+/*
+Autoloader::alias('Application\\Core\\App_Loader', 'Loader');
+Autoloader::alias('Application\\Core\\App_Router', 'Router');
+Autoloader::alias('Application\\Core\\App_Uri', 'Uri');
+*/
+Config::load('config, autoload');
+Session::init();
+
+$router = Router::getInstance();
+$uri	= Uri::getInstance();
+$load   = Loader::getInstance();
 $route  = $router->set();
 
 $load->library(Config::get('libraries'));

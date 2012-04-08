@@ -119,15 +119,18 @@ class Loader{
 
     			include_once($dir);	
     			    				
-    			if (class_exists($clase) AND $obj)
+    			if ( ! class_exists($clase) OR ! $obj)
     			{	
-    				$clase = ucfirst($clase);
-
-    				$this->objects[$objeto] = new $clase($params);   
-    			    		    
-    			    $controller = Controller::getInstance();
-    			    $controller->$objeto = $this->objects[$objeto];    			
+    				continue;
     			}
+			
+				$clase = ucfirst($clase);
+
+				$this->objects[$objeto] = new $clase($params);   
+			    		    
+			    $controller = Controller::getInstance();
+			    $controller->$objeto = $this->objects[$objeto];    			
+    			
     			break;
 			}					
 		}
@@ -153,7 +156,7 @@ class Loader{
 		return $this;
 	}
 
-	function view($file = null, $data = array(), $return = false)
+	function view($file = null, $data = array(), $return = false, $manual = '')
 	{
 		if (is_null($file))
 		{
@@ -162,11 +165,16 @@ class Loader{
 
 		$router = Router::getInstance();
 
-		$view = APP_PATH.'packages/'.$router->package.'/'.$router->subpackage.'/views/'.$file.EXT;
+		$view = $manual.$file;
 
-		if ( ! file_exists($view))
+		if ( ! file_exists($view) OR empty($manual))
 		{
-			throw new Loader_Exception('The specified view could not be found<br>'.$view);
+			$view = APP_PATH.'packages/'.$router->package.'/'.$router->subpackage.'/views/'.$file.EXT;
+
+			if ( ! file_exists($view))
+			{
+				throw new Loader_Exception('The specified view could not be found<br>'.$view);
+			}
 		}
 
 		foreach (Controller::getInstance() as $key => $val)

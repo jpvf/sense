@@ -30,16 +30,13 @@ class Controller{
     {      
         self::$instance = $this;
 
-        $this->load     = \Loader::getInstance();
+        $this->load     = Loader::getInstance();
         $this->uri      = Uri::getInstance();
         $this->input    = Input::getInstance();         
         $this->language = Language::getInstance();
         $this->db       = \Sense\Database\db::getInstance();
         $this->forge    = \Sense\Database\Forge::getInstance();
-        $this->session  = \Sense\Libraries\Session::getInstance();
-
-        new Model;
-
+        
         foreach ($this->load->objects as $key => $val)
         {
             if ( ! isset($this->$key))
@@ -50,7 +47,7 @@ class Controller{
 
         if (isset($this->language))
         {
-            $this->language->load($this->session->get('user_lang'));
+            $this->language->load(\Session::get('user_lang'));
         }
 
 	}

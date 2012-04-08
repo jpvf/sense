@@ -6,7 +6,7 @@ class Message {
     
     private static function _message($type = '', $text = '', $url = '')
     {
-        session::getInstance()->set_flashdata(array(
+        Session::flash(array(
             'text' => $text, 
             'type' => $type
         ));

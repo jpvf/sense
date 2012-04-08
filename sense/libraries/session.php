@@ -1,45 +1,38 @@
-<?php 
+<?php namespace Sense\Libraries;
 
-namespace Sense\Libraries;
-
-class Session{
-
-    private static $instance;
-
-    static function getInstance() 
-    { 
-        if ( ! static::$instance) 
-        { 
-            static::$instance = new Session(); 
-        } 
-        return static::$instance; 
-    }
+class Session {
     
-    function __construct()
-    {
-        static::$instance = $this;
-        
-        $this->input = \Sense\Core\Input::getInstance();
-        
+    /**
+     * Init
+     *
+     * Start the session, clean up the flash vars and empty the cache
+     * to avoid any issues with authentication.
+     *
+     */
+
+    static function init()
+    {        
         isset($_SESSION) OR session_start();
-        
+
+        session_regenerate_id();
+
         if (isset($_SESSION['flashdata']['old']))
         {
             unset($_SESSION['flashdata']['old']);
         }
         
-        if (isset($_SESSION['flashdata']['old']))
+        if ( ! isset($_SESSION['flashdata']['old']) AND isset($_SESSION['flashdata']['new']))
         {
             $_SESSION['flashdata']['old'] = $_SESSION['flashdata']['new'];
             unset($_SESSION['flashdata']['new']);
         }
         
-        $this->clean_cache();
+        static::clean_cache();
     }
     	
-    private function _set_vars($vars = array(), $val = '', $flashdata = false)
+    private static function _set_vars($vars = array(), $val = '', $flashdata = false)
     {
-        if ( is_string($vars) AND ! empty($val))
+        if ( ! is_array($vars) AND ! empty($val))
         {
             $vars = array($vars => $val);
         }
@@ -57,100 +50,72 @@ class Session{
         }
     }
 
+    public static function has($item = '')
+    {
+        return isset($_SESSION[$item]) AND ! empty($item) ? true : false;
+    }
+
    
-    function set_flashdata($flash = array(), $val = '')
+    public static function flash($flash = array(), $val = '')
     {
-        $this->_set_vars($flash, $val, TRUE);
-        return $this;
+        static::_set_vars($flash, $val, TRUE);
     }
 
-    function set($key = null, $value = '')
+    public static function set($key = null, $value = '')
     {
-        if ( ! is_null($name))
+        if ( ! is_null($key))
         {
-            $this->_set_vars($name, $value);                        
+            static::_set_vars($key, $value);                        
         }
-        return $this;
-    }
-    
+    }    
 
-    function get_flashdata($key)
+    public static function get_flash($key)
     {
-        if ( ! isset($_SESSION['flashdata']['old'][$key]))
+        if (isset($_SESSION['flashdata']['old'][$key]))
         {
-            return FALSE;
+            return $_SESSION['flashdata']['old'][$key];
         }
         
-        return $_SESSION['flashdata']['old'][$key];
+        return false;
     }
     
-	function get($key = NULL, $key2 = NULL)
+	public static function get($key = null, $default = null)
 	{
-        if (is_null($key))
-        {
-            return FALSE;
-        }
-
-        if ( ! is_null($key2) AND isset($_SESSION[$key][$key2]))
-        {
-           return $_SESSION[$key][$key2]; 
-        }
-        elseif (isset($_SESSION[$key]))
+        if (isset($_SESSION[$key]))
         {
            return $_SESSION[$key]; 
         }
 
-        return FALSE;     
+        return $default;     
 	}
 	
-	function get_session()
+	public static function all()
 	{
 	   return $_SESSION;
 	}
  
-	function unset_var($key = NULL, $key2 = NULL)
+	public static function remove($key = null)
     {
-        if (is_null($key))
-        {
-            return FALSE;
-        }
-
-        if ( ! is_null($key2) AND ! is_null($key))
-        {
-           unset($_SESSION[$key][$key2]); 
-        }
-
-        if (isset($_SESSION[$key]))
+        if (isset($_SESSION[$key]) AND ! is_null($key))
         {
            unset($_SESSION[$key]); 
+           return true;
         }
 
-        return $this;     
-    }
-    
+        return false;     
+    }   
 
-    //----------------------------/
-	function register($userdata = array(), $site = 'default')
-    {
-        $_SESSION[$site] = array('userdata' => $userdata);
-    }
-
-    function end_current($redirect = TRUE)
+    public static function destroy()
     {
     	$_SESSION = array();
     	$_COOKIE  = array();
         @session_unset();
         @session_destroy();
-        $this->clean_cache();
-        
-        if ($redirect === TRUE)
-        {
-        	redirect();
-        }
+        @session_regenerate_id();
+        static::clean_cache();
     }
 
-
-    function clean_cache()
+    public static function clean_cache()
     {
         session_cache_limiter('nocache');
         header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); 
@@ -160,14 +125,7 @@ class Session{
         header("Pragma: no-cache");
     }
 
-   
-    public function token($nombre = 'token', $token)
-    {
-    	$this->set($nombre, $token);
-    	return $token;
-    }
-
-    public function get_session_id()
+    public static function id()
     {
         return session_id();
     }
